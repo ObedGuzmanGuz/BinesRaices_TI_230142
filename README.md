@@ -7,6 +7,7 @@ Proyecto Integrador de la asignatura de Aplicaciones Web Orientadas a Servicios 
 |No.|Fecha|Descripcion|Estatus|
 |---|-----|-----|----|
 |ACT-01|27/11/2024|Cargar el código base de la Aplicación de BienesRaíces en un Nuevo Repositorio Privado| Finalizada|
+|ACT-02|12/12/2024|Implementar su paleta de colores, tipografías , y diseño de componentes| Finalizada|
 
 
 

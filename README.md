@@ -11,6 +11,7 @@ Proyecto Integrador de la asignatura de Aplicaciones Web Orientadas a Servicios 
 |ACT-03|12/12/2024|Agregar la Categoría "Establecimientos" para poder rentar o vender espacios para negocios| Finalizada|
 |ACT-04|12/12/2024|Cambiar la posición inicial del mapa a su LAT y LNG de su CASA (estudiante)| Finalizada|
 |ACT-05|12/12/2024|Agrega la funcionalidad de guardar una imagen de perfil al momento de crear su cuenta , también incluir la validación de cuentas para mayores de edad. | Finalizada|
+|ACT-06|13/12/2024|En la tarjetas (CARDS) de las propiedades incluir el Avatar del Vendedor y su alias de usuario  | Finalizada|
 
 
 

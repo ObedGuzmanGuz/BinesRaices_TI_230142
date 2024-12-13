@@ -1,10 +1,10 @@
 (function () {
 
-    const lat = document.querySelector('#lat').value || 20.67444163271174;
-    const lng = document.querySelector('#lng').value || -103.38739216304566;
+    const lat = document.querySelector('#lat').value || 20.240045181024744;
+    const lng = document.querySelector('#lng').value || -97.95357793558222;
     const mapa = L.map('mapa').setView([lat, lng], 16);
     let marker;
-
+    
     //utilizar provider y geocoder
 
     const geocodeService = L.esri.Geocoding.geocodeService();

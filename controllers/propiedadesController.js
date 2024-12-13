@@ -98,13 +98,16 @@ const guardar = async (req, res) => {
     }
 
     //Crear registro
-    const { titulo, descripcion, habitaciones, estacionamiento, wc, calle, lat, lng, precio: precioID, categoria: categoriaID } = req.body
+    const { titulo, descripcion, venta_renta, habitaciones, estacionamiento, wc, calle, lat, lng, precio: precioID, categoria: categoriaID } = req.body
 
     const { id: usuarioID } = req.usuario
+
+console.log('Datos recibidos:', req.body);
     try {
         const propiedadGuardada = await Propiedad.create({
             titulo,
             descripcion,
+            tipo: venta_renta,
             habitaciones,
             estacionamiento,
             wc,
@@ -265,11 +268,12 @@ const guardarCambios = async (req, res) => {
     //Rescribir el objeto y actualizar la bd
 
     try {
-        const { titulo, descripcion, habitaciones, estacionamiento, wc, calle, lat, lng, precio: precioID, categoria: categoriaID } = req.body
-
+        const { titulo, descripcion,venta_renta, habitaciones, estacionamiento, wc, calle, lat, lng, precio: precioID, categoria: categoriaID } = req.body
+        console.log('Datos recibidos para guardar cambios:', req.body);
         propiedad.set({
             titulo,
             descripcion,
+            tipo: venta_renta,
             habitaciones,
             estacionamiento,
             wc,

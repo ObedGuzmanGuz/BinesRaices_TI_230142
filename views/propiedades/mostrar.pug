@@ -14,6 +14,7 @@ block contenido
         div(class="mt-5 md:flex md:gap-4 md:items-start")
             div(class="md:w-2/3 bg-white shadow rounded-lg") 
                 img(src=`/uploads/${propiedad.imagen}` , alt=`imagen de la propiedad ${propiedad.titulo}`)
+                div.bg-redNCS.rounded-lg.text-white.font-semibold.text-md.text-center(max-w-24 py-1.5 px-3 absolute top-3 left-3)= propiedad.venta ? 'Se vende' : 'Se renta'
 
                 div(class="px-5 py-10 space-y-5")
                     p= propiedad.descripcion
@@ -22,7 +23,11 @@ block contenido
                     div(class="grid grid-cols-1 md:grid-cols-2")
                         p(class="text-gray-600 font-bold text-xs") WC
                             span(class="text-gray-800 block text-lg")= propiedad.wc
-           
+                        p(class="text-gray-600 font-bold text-xs") Estado
+                            span(class="text-gray-800 block text-lg")= propiedad.tipo === 'vender' ? 'Se vende' : 'Se renta'
+
+
+
                         p(class="text-gray-600 font-bold text-xs") Habitaciones
                             span(class="text-gray-800 block text-lg")= propiedad.habitaciones
                         

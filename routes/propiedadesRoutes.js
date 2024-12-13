@@ -19,7 +19,10 @@ router.post('/propiedades/crear', protegerRuta,
     body('habitaciones').isNumeric().withMessage('Selecciona la cantidad de habitaciones'),
     body('estacionamiento').isNumeric().withMessage('Selecciona la cantidad de estacionamientos'),
     body('wc').isNumeric().withMessage('Selecciona la cantidad de wc'),
-    body('lat').notEmpty().withMessage('Ubica la propiedad en el mapa'),
+    body('lat').notEmpty().withMessage('Ubica la propiedad en el mapa'),   
+    body('venta_renta')
+    .notEmpty().withMessage('Selecciona una opción de Venta o Renta')
+    .custom((value) => ['vender', 'rentar'].includes(value)).withMessage('Opción no válida'),
     guardar)
 router.get('/propiedades/agregar-imagen/:id',
     protegerRuta,

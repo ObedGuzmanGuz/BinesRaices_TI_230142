@@ -19,6 +19,9 @@ const Propiedad = db.define('propiedades', {
     habitaciones: {
         type: DataTypes.INTEGER,
         allowNull: false
+    },tipo: {
+        type: DataTypes.ENUM('rentar', 'vender'),
+        allowNull: false
     },
     estacionamiento: {
         type: DataTypes.INTEGER,

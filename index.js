@@ -12,7 +12,7 @@ const app = express()
 
 //habilitar lectura de datos de formularios
 
-app.use(express.urlencoded({ extend: true }))
+app.use(express.urlencoded({ extended: true }))
 
 //Habilitar cookie Parser
 app.use(cookieParser())

@@ -3,7 +3,9 @@ import bcrypt from 'bcrypt'
 import Usuario from '../models/Usuario.js'
 import { generateID, generarJWT } from '../helpers/tokens.js'
 import { emailRegistro, emailOlvidePassword } from '../helpers/emails.js'
-
+import moment from 'moment';
+import { Result } from 'postcss'
+import { where } from 'sequelize'
 const formularioLogin = (req, res) => {
     res.render('auth/login', {
         pagina: 'Iniciar Sesión',
@@ -88,11 +90,21 @@ const registrar = async (req, res) => {
     console.log(req.body)
 
     //validación
-    await check('nombre').notEmpty().withMessage('El nombre no puede ir vacio').run(req)
-    await check('email').isEmail().withMessage('Eso no parece un email').run(req)
-    await check('password').isLength({ min: 6 }).withMessage('El password debe ser de almenos 6 caracteres').run(req)
-    await check('repetir_password').equals(req.body.password).withMessage('Los password no coinciden').run(req)
 
+    let d = new Date()
+    let year = d.getFullYear()
+    let month = d.getMonth()
+    let day = d.getDate()
+    let cA = new Date(year - 18, month, day).toDateString()
+    await check('nombre').notEmpty().withMessage('El nombre no puede ir vacio').run(req)
+    await check('email').notEmpty().withMessage('No es un Email').isEmail().withMessage('Correo campo obligatorio').run(req) 
+    await check('email').notEmpty().withMessage('El correo electronico es un campo obligatorio').isEmail().withMessage('El correo electronico no tiene el formato correcto').run(req)
+    await check('birthdate').notEmpty().withMessage('La fecha de nacimiento es obligatoria').isBefore(cA).withMessage('No cumples con la mayoria de edad').run(req)
+    
+   
+    await check('password').notEmpty().withMessage('Contraseña campo obligatorio').isLength({min: 8}).withMessage('El password debe de ser de almenos 8 caracteres').run(req)   
+    await check('repetir_password').equals(req.body.password).withMessage('Los password no son iguales').run(req)   
+    
     let resultado = validationResult(req)
 
 
@@ -104,14 +116,15 @@ const registrar = async (req, res) => {
             errores: resultado.array(),
             usuario: {
                 nombre: req.body.nombre,
-                email: req.body.email
+                email: req.body.email,
+                birthdate: req.body.birthdate
             }
         })
     }
 
     //Extraer los datos
 
-    const { nombre, email, password } = req.body
+    const { nombre, email,birthdate, password } = req.body
 
     //verificar que el usuario no este duplicado
     const existeUsuario = await Usuario.findOne({ where: { email } })
@@ -131,9 +144,11 @@ const registrar = async (req, res) => {
     const usuario = await Usuario.create({
         nombre,
         email,
+        birthdate,
         password,
         token: generateID()
     })
+    console.log(req.body.birthdate); // Esto te dirá si el campo está siendo enviado
 
     //Enviar email de confirmacion
     emailRegistro({
@@ -143,12 +158,32 @@ const registrar = async (req, res) => {
     })
 
 
-    //Mostrar mensaje de confirmación
-    res.render('templates/message', {
-        pagina: 'Cuenta creada correctamente',
-        mensaje: 'Hemos enviado un email de confirmación, presiona en el enlace'
-    })
+    // Renderizar la vista de agregar imagen
+    res.render('auth/agregar-imagen', {
+        csrfToken: req.csrfToken(),
+        usuarioId: usuario.id
+    });
 }
+
+const agregarFotoPerfil = async (req, res, next) => {
+    const { usuarioId } = req.body
+    try {
+        const usuario = await Usuario.findByPk(usuarioId)
+        
+       
+        next()
+
+        if (req.file) {
+            usuario.image = req.file.filename;
+        } else {
+            usuario.image = 'default.jpg';
+        }
+        await usuario.save();
+        res.redirect(`/mensaje?usuarioId=${usuarioId}&mensaje=${encodeURIComponent('Hemos enviado un correo de confirmación')}`);
+    } catch (error) {
+        console.log(error)
+    }
+};
 
 //Funcion que comprueba una cuenta
 const confirmar = async (req, res) => {
@@ -160,7 +195,7 @@ const confirmar = async (req, res) => {
     if (!usuario) {
         return res.render('auth/confirmar-cuenta', {
             pagina: 'Error al confirmar tu cuenta',
-            mensaje: 'Hubo un error al confirmar tu cuenta, intenta de nuevo',
+            mensaje: 'Hubo un error al confirmar tu cuentz',
             error: true
         })
     }
@@ -225,7 +260,7 @@ const resetPassword = async (req, res) => {
     //Renderizar un mensaje
     res.render('templates/message', {
         pagina: 'Restablece tu password',
-        mensaje: 'Hemos enviado un email con las instrucciones'
+        mensaje: `Hemos enviado un Email de confirmación al correo  ${email}`
     })
 
 }
@@ -290,6 +325,7 @@ export {
     formularioRegistro,
     autenticar,
     registrar,
+    agregarFotoPerfil,
     confirmar,
     formularioOlvidePassword,
     resetPassword,

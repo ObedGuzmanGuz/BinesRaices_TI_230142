@@ -9,6 +9,7 @@ Proyecto Integrador de la asignatura de Aplicaciones Web Orientadas a Servicios 
 |ACT-01|27/11/2024|Cargar el código base de la Aplicación de BienesRaíces en un Nuevo Repositorio Privado| Finalizada|
 |ACT-02|12/12/2024|Implementar su paleta de colores, tipografías , y diseño de componentes| Finalizada|
 |ACT-03|12/12/2024|Agregar la Categoría "Establecimientos" para poder rentar o vender espacios para negocios| Finalizada|
+|ACT-04|12/12/2024|Cambiar la posición inicial del mapa a su LAT y LNG de su CASA (estudiante)| Finalizada|
 
 
 

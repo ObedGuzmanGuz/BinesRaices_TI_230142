@@ -26,7 +26,7 @@ Dropzone.options.fotoperfil = {
         dropzone.on('queuecomplete', function(){
             if(dropzone.getActiveFiles().length == 0){
                 const usuarioId = document.querySelector('input[name="usuarioId"]').value
-                window.location.href = `/auth/mensaje?usuarioId=${usuarioId}`
+                window.location.href = `/auth/login`
             }
         })
     }

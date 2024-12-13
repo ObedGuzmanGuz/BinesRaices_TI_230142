@@ -135,8 +135,7 @@ const registrar = async (req, res) => {
             errores: [{ msg: 'El usuario ya esta Registrado' }],
             usuario: {
                 nombre: req.body.nombre,
-                email: req.body.email,
-                birthdate: req.body.birthdate
+                email: req.body.email
             }
         })
     }
@@ -159,30 +158,33 @@ const registrar = async (req, res) => {
     })
 
 
-    //Mostrar mensaje de confirmación
-    res.render('templates/message', {
-        pagina: 'Cuenta creada correctamente',
-        mensaje: 'Hemos enviado un email de confirmación, presiona en el enlace'
-    })
-
+    // Renderizar la vista de agregar imagen
     res.render('auth/agregar-imagen', {
         csrfToken: req.csrfToken(),
         usuarioId: usuario.id
     });
-
 }
+
 const agregarFotoPerfil = async (req, res, next) => {
     const { usuarioId } = req.body
     try {
         const usuario = await Usuario.findByPk(usuarioId)
-        usuario.image = req.file.filename
-        await usuario.save()
-        res.redirect(`/mensaje?usuarioId=${usuarioId}`);
+        
+       
         next()
+
+        if (req.file) {
+            usuario.image = req.file.filename;
+        } else {
+            usuario.image = 'default.jpg';
+        }
+        await usuario.save();
+        res.redirect(`/mensaje?usuarioId=${usuarioId}&mensaje=${encodeURIComponent('Hemos enviado un correo de confirmación')}`);
     } catch (error) {
         console.log(error)
     }
-}
+};
+
 //Funcion que comprueba una cuenta
 const confirmar = async (req, res) => {
     const { token } = req.params;
@@ -193,7 +195,7 @@ const confirmar = async (req, res) => {
     if (!usuario) {
         return res.render('auth/confirmar-cuenta', {
             pagina: 'Error al confirmar tu cuenta',
-            mensaje: 'Hubo un error al confirmar tu cuenta, intenta de nuevo',
+            mensaje: 'Hubo un error al confirmar tu cuentz',
             error: true
         })
     }
@@ -258,7 +260,7 @@ const resetPassword = async (req, res) => {
     //Renderizar un mensaje
     res.render('templates/message', {
         pagina: 'Restablece tu password',
-        mensaje: 'Hemos enviado un email con las instrucciones'
+        mensaje: `Hemos enviado un Email de confirmación al correo  ${email}`
     })
 
 }

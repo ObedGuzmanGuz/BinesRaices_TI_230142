@@ -1,9 +1,17 @@
 extends ../layout/index
 
 block contenido
-    div.py-10
-        h1.text-4xl.my-10.font-extrabold.text-center Bienes 
-            span.font-normal Raíces  
-        h2.text-center.text-2xl.font-extrabold= pagina
+    input(type="hidden" name="_csrf" value=csrfToken)
+    .py-10
+        h1.text-4xl.my-10.font-extrabold.text-center.text-redNCS Bienes
+            span.font-normal.text-black Raíces
+        center.bg-white.py-8.px-4.shadow-xl.rounded-xl.max-h-space.mt-8.mx-auto.max-w-2xl
+           h2.text-center.text-2xl.font-bold= page
+            .py-10
+                span.text-xl.font-bold.text-center.my-10 Hemos enviado un correo a: 
+                span.text-xl.font-bold.text-cerulean= msg
+                span.text-xl.font-bold.text-center.my-10 , para #{confirmacion ? 'la confirmación de la cuenta' : 'la recuperación de la cuenta'}
 
-        p.text-xl.font-bold.text-center.my-10= mensaje
+
+            a(href="/auth/login" class="block w-full bg-mint hover:bg-orange text-white font-bold py-3 text-center cursor-pointer") Iniciar Sesión
+            

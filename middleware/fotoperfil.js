@@ -1,16 +1,18 @@
-import multer from 'multer'
-import path from 'path'
-import { generateID } from '../helpers/tokens.js'
+import multer from 'multer';
+import path from 'path';
+import { generateID } from '../helpers/tokens.js';
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './public/profile_images/')
+        // Cambia la ruta a './public/img/'
+        cb(null, './public/img/');
     },
     filename: function (req, file, cb) {
-        cb(null, generateID() + path.extname(file.originalname))
+        // Usa generateID() para generar un nombre único y conserva la extensión
+        cb(null, generateID() + path.extname(file.originalname));
     }
-})
+});
 
-const upload = multer({ storage })
+const upload = multer({ storage });
 
-export default upload
+export default upload;
